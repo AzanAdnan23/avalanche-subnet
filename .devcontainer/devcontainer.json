@@ -1,0 +1,72 @@
+// For format details, see https://aka.ms/devcontainer.json.
+{
+	"name": "Avalanche Starter Kit",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"runArgs": [
+		"--network=host",
+		"--env-file",
+		"./.env"
+	],
+	"remoteEnv": {
+		"PATH": "${containerEnv:PATH}:/usr/local/bin/",
+		"PK": "--",
+		"KEYSTORE": "${containerWorkspaceFolder}/keystore",
+		"AVALANCHE_CLI_GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}",
+		"FUNDED_ADDRESS": "0xa52482a9eEB7519e309A79D581c40030fb596CeF",
+		"TELEPORTER_REGISTRY_C_CHAIN": "0xF86Cb19Ad8405AEFa7d09C778215D2Cb6eBfB228",
+		"C_CHAIN_BLOCKCHAIN_ID_HEX": "0x7fc93d85c6d62c5b2ac0b519c87010ea5294012d1e407030d6acd0021cac10d5",
+		"PK_43113": "--"
+	},
+	"postCreateCommand": {
+		"init-git-submodules": "git config --global --add safe.directory ${containerWorkspaceFolder} && git submodule update --init --recursive"
+	},
+	"postStartCommand": {
+		"update-git-submodules": "git submodule update --recursive",
+		"enable-avalanche-cli-metrics": "avalanche config metrics enable",
+		"configure-ports": "chmod +x .devcontainer/configure-ports.sh && .devcontainer/configure-ports.sh"
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/github-cli:1": {}
+	},
+	"forwardPorts": [
+		3000,
+		9650,
+		9652,
+		9654,
+		9656,
+		9658
+	],
+	"portsAttributes": {
+		"3000": {
+			"label": "Frontend"
+		},
+		"9650": {
+			"label": "Node-1"
+		},
+		"9652": {
+			"label": "Node-2"
+		},
+		"9654": {
+			"label": "Node-3"
+		},
+		"9656": {
+			"label": "Node-4"
+		},
+		"9658": {
+			"label": "Node-5"
+		}
+	},
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"git.autofetch": true
+			},
+			"extensions": [
+				"juanblanco.solidity"
+			]
+		}
+	}
+}
